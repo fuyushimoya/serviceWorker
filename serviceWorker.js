@@ -1,5 +1,5 @@
 // handle install step
-self.addEventListener('push', function (event) {
+self.addEventListener('message', function (event) {
     var obj = event.data.json();
     console.log(obj);
 });
