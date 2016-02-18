@@ -1,12 +1,29 @@
 // Functions
 function registerService() {
-    console.log("registerService Not implement yet");
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('serviceWorker.js')
+            .then(function registerSuccess() {
+                showState("Reg Success.");
+            })
+            .catch(function registerFailed()) {
+                showState("Reg Failed.");
+            }
+    } else {
+        console.warn('Service worker not available.');
+    }
 }
 function unregisterService() {
-    console.log("unregisterService Not implement yet");
+    showState("unregisterService Not implement yet");
 }
 function runWebWorker() {
-    console.log("runWebWorker Not implement yet");
+    showState("runWebWorker Not implement yet");
+}
+
+function showState(state) {
+    if (!this.state) {
+        this.state = document.getElementById('state');
+    }
+    this.state.innerText = state;
 }
 
 (function domReadyHandler() {
