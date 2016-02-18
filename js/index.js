@@ -1,3 +1,6 @@
+var activeServiceWorker = null;
+var activeChannel = null;
+
 // Functions
 function registerService() {
     if ('serviceWorker' in navigator) {
@@ -24,12 +27,11 @@ function initState() {
 
     // Wait until serviceWorker is ready
     navigator.serviceWorker.ready.then(function (reg) {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(e) {
+        activeChannel = new MessageChannel();
+        activeChannel.port1.onmessage = function(e) {
             console.log(e);
         };
-
-        reg.active.postMessage('Test', [channel.port2]);
+        activeServiceWorker = reg.active;
     });
 }
 
@@ -56,6 +58,15 @@ function testNotification() {
     }
 }
 
+function postMessage() {
+    if (!activeServiceWorker) {
+        console.log("Not available");
+        return;
+    }
+
+    var text = document.getElementById('sendContent').value;
+    activeServiceWorker.postMessage(text, [activeChannel.port2]);
+}
 
 
 (function domReadyHandler() {
@@ -64,8 +75,10 @@ function testNotification() {
     var registerServiceBtn = document.getElementById('registerService');
     var unRegisterServiceBtn = document.getElementById('unRegisterService');
     var runWebWorkerBtn = document.getElementById('worker');
+    var sendMessageBtn = document.getElementById('send');
 
     registerServiceBtn.addEventListener('click', registerService);
     unRegisterServiceBtn.addEventListener('click', unregisterService);
     runWebWorkerBtn.addEventListener('click', runWebWorker);
+    sendMessageBtn.addEventListener('click', postMessage);
 })();
