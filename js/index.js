@@ -24,6 +24,15 @@ function showState(state) {
         this.state = document.getElementById('state');
     }
     this.state.innerText = state;
+    if (isNotificationAvailable()) {
+        notify(state);
+    }
+}
+
+function testNotification() {
+    if (isNotificationAvailable()) {
+        notify('BlaBlaBla');
+    }
 }
 
 (function domReadyHandler() {
