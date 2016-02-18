@@ -5,9 +5,9 @@ function registerService() {
             .then(function registerSuccess() {
                 showState("Reg Success.");
             })
-            .catch(function registerFailed()) {
+            .catch(function registerFailed() {
                 showState("Reg Failed.");
-            }
+            });
     } else {
         console.warn('Service worker not available.');
     }
