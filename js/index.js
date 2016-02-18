@@ -2,8 +2,10 @@
 function registerService() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('serviceWorker.js')
-            .then(function registerSuccess() {
+            .then(function registerSuccess(reg) {
                 showState("Reg Success.");
+
+                initState();
             })
             .catch(function registerFailed() {
                 showState("Reg Failed.");
@@ -12,6 +14,25 @@ function registerService() {
         console.warn('Service worker not available.');
     }
 }
+
+function initState() {
+    // Check if push messaging is supported  
+    if (!('PushManager' in window)) {  
+        console.log('Push messaging isn\'t supported.');  
+        return;  
+    }
+
+    // Wait until serviceWorker is ready
+    navigator.serviceWorker.ready.then(function (reg) {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(e) {
+            console.log(e);
+        };
+
+        reg.active.postMessage('Test', [channel.port2]);
+    });
+}
+
 function unregisterService() {
     showState("unregisterService Not implement yet");
 }
@@ -34,6 +55,8 @@ function testNotification() {
         notify('BlaBlaBla');
     }
 }
+
+
 
 (function domReadyHandler() {
     console.log('Dom ready, start to do something...');
