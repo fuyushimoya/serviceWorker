@@ -79,9 +79,9 @@ function fireNotification(text) {
         var transaction = db.transaction(["kvPair"]);
         var store = transaction.objectStore('kvPair');
         var req = store.get('interval');
-        req.onsuccess = function(evt) {
-            console.log(evt);
-            var interval = evt.result ? evt.result.value : 0;
+        req.onsuccess = function(sEvt) {
+            console.log(sEvt);
+            var interval = sEvt.target.result ? sEvt.target.result.value : 0;
             if (interval > 0) {
                 startInterval(obj.content);
             } else {
