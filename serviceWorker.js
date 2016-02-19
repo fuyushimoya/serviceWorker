@@ -7,7 +7,7 @@ self.addEventListener('activate', function() {
     dbRequest.onsuccess = function(evt) {
         var db = evt.target.result;
         var transaction = db.transaction(["kvPair"]);
-        var store = transaction.objStore('kvPair');
+        var store = transaction.objectStore('kvPair');
         var req = store.get('interval');
         req.onsuccess = function(evt) {
             console.log(evt);
@@ -38,7 +38,7 @@ self.addEventListener('message', function (event) {
             dbRequest.onsuccess = function(evt) {
                 var db = evt.target.result;
                 var transaction = db.transaction(["kvPair"], "readwrite");
-                var store = transaction.objStore('kvPair');
+                var store = transaction.objectStore('kvPair');
                 store.put({key: 'interval', value: obj.content});
             };
 
