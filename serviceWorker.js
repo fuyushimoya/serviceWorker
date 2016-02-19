@@ -1,6 +1,7 @@
 self.addEventListener('activate', function() {
     var dbRequest = indexedDB.open('testServiceWorker');
     dbRequest.onsuccess = function(evt) {
+        var db = event.target.result;
         var transaction = db.transaction(["kvPair"]);
         var store = transaction.objStore('kvPair');
         var req = store.get('interval');
