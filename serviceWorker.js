@@ -1,5 +1,9 @@
 self.addEventListener('activate', function() {
     var dbRequest = indexedDB.open('testServiceWorker');
+    dbRequest.onupgradeneeded = function(evt) {
+        var db = evt.target.result;
+        var store = db.createStore('kvPair', {keyPath: 'key'});
+    };
     dbRequest.onsuccess = function(evt) {
         var db = evt.target.result;
         var transaction = db.transaction(["kvPair"]);
