@@ -2,7 +2,7 @@ self.addEventListener('activate', function() {
     var dbRequest = indexedDB.open('testServiceWorker', 3);
     dbRequest.onupgradeneeded = function(evt) {
         var db = evt.target.result;
-        var store = db.createStore('kvPair', {keyPath: 'key'});
+        var store = db.createObjectStore('kvPair', {keyPath: 'key'});
     };
     dbRequest.onsuccess = function(evt) {
         var db = evt.target.result;
@@ -32,7 +32,7 @@ self.addEventListener('message', function (event) {
             var dbRequest = indexedDB.open('testServiceWorker', 3);
             dbRequest.onupgradeneeded = function(evt) {
                 var db = evt.target.result;
-                var store = db.createStore('kvPair', {keyPath: 'key'});
+                var store = db.createObjectStore('kvPair', {keyPath: 'key'});
             };
 
             dbRequest.onsuccess = function(evt) {
