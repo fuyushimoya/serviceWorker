@@ -71,6 +71,32 @@ function postMessage() {
     });
 }
 
+function startInterval() {
+    if (!activeServiceWorker) {
+        console.log("Not available");
+        return;
+    }
+
+    var text = document.getElementById('sendContent').value;
+    activeServiceWorker.postMessage({
+        type: 'interval',
+        content: 10000
+    });
+}
+
+function stopInterval() {
+    if (!activeServiceWorker) {
+        console.log("Not available");
+        return;
+    }
+
+    var text = document.getElementById('sendContent').value;
+    activeServiceWorker.postMessage({
+        type: 'interval',
+        content: -1
+    });
+}
+
 
 (function domReadyHandler() {
     console.log('Dom ready, start to do something...');
@@ -79,9 +105,13 @@ function postMessage() {
     var unRegisterServiceBtn = document.getElementById('unRegisterService');
     var runWebWorkerBtn = document.getElementById('worker');
     var sendMessageBtn = document.getElementById('send');
+    var startIntervalBtn = document.getElementById('startInterval');
+    var stopIntervalBtn = document.getElementById('stopInterval');
 
     registerServiceBtn.addEventListener('click', registerService);
     unRegisterServiceBtn.addEventListener('click', unregisterService);
     runWebWorkerBtn.addEventListener('click', runWebWorker);
     sendMessageBtn.addEventListener('click', postMessage);
+    startIntervalBtn.addEventListener('click', startInterval);
+    stopIntervalBtn.addEventListener('click', stopInterval);
 })();
