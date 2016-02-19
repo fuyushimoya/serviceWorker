@@ -1,7 +1,7 @@
 self.addEventListener('activate', function() {
     var dbRequest = indexedDB.open('testServiceWorker');
     dbRequest.onsuccess = function(evt) {
-        var db = event.target.result;
+        var db = evt.target.result;
         var transaction = db.transaction(["kvPair"]);
         var store = transaction.objStore('kvPair');
         var req = store.get('interval');
@@ -27,30 +27,36 @@ self.addEventListener('message', function (event) {
             // Set to DB
             var dbRequest = indexedDB.open('testServiceWorker');
             dbRequest.onupgradeneeded = function(evt) {
-                var db = event.target.result;
+                var db = evt.target.result;
                 var store = db.createStore('kvPair', {keyPath: 'key'});
             };
 
             dbRequest.onsuccess = function(evt) {
-                var db = event.target.result;
+                var db = evt.target.result;
                 var transaction = db.transaction(["kvPair"], "readwrite");
                 var store = transaction.objStore('kvPair');
                 store.put({key: 'interval', value: obj.content});
             };
 
             startInterval(obj.content);
+            fireNotification('Interval Stared.');
         } else {
             stopInterval();
+            fireNotification('Interval Stopped.');
         }
     }
 });
 
 var intervalHandle = null;
 function startInterval(time) {
+    // Clear prev.
+    if (intervalHandle !== null) {
+        startInterval();
+    }
     intervalHandle = setInterval(function() {
         var now = new Date();
         var title = 'TimeNow';
-        var body = now.toDateString();
+        var body = now.toLocaleString();
         var icon = 'push-icon.png';
         var tag = 'timeNotify';
 
