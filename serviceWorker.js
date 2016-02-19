@@ -83,7 +83,7 @@ function fireNotification(text) {
             console.log(sEvt);
             var interval = sEvt.target.result ? sEvt.target.result.value : 0;
             if (interval > 0) {
-                startInterval(obj.content);
+                startInterval(interval);
             } else {
                 stopInterval();
             }
