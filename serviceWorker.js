@@ -1,26 +1,3 @@
-self.addEventListener('activate', function() {
-    var dbRequest = indexedDB.open('testServiceWorker', 3);
-    dbRequest.onupgradeneeded = function(evt) {
-        var db = evt.target.result;
-        var store = db.createObjectStore('kvPair', {keyPath: 'key'});
-    };
-    dbRequest.onsuccess = function(evt) {
-        var db = evt.target.result;
-        var transaction = db.transaction(["kvPair"]);
-        var store = transaction.objectStore('kvPair');
-        var req = store.get('interval');
-        req.onsuccess = function(evt) {
-            console.log(evt);
-            var interval = evt.result ? evt.result.value : 0;
-            if (interval > 0) {
-                startInterval(obj.content);
-            } else {
-                stopInterval();
-            }
-        }
-    };
-});
-
 self.addEventListener('message', function (event) {
     var obj = event.data;
     console.log(obj);
@@ -90,3 +67,28 @@ function fireNotification(text) {
     tag: tag  
   });
 }
+
+(function onStart() {
+    var dbRequest = indexedDB.open('testServiceWorker', 3);
+    dbRequest.onupgradeneeded = function(evt) {
+        var db = evt.target.result;
+        var store = db.createObjectStore('kvPair', {keyPath: 'key'});
+    };
+    dbRequest.onsuccess = function(evt) {
+        var db = evt.target.result;
+        var transaction = db.transaction(["kvPair"]);
+        var store = transaction.objectStore('kvPair');
+        var req = store.get('interval');
+        req.onsuccess = function(evt) {
+            console.log(evt);
+            var interval = evt.result ? evt.result.value : 0;
+            if (interval > 0) {
+                startInterval(obj.content);
+            } else {
+                stopInterval();
+            }
+        }
+    };
+
+    fireNotification('Back onLine.');
+})();
