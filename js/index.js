@@ -65,7 +65,10 @@ function postMessage() {
     }
 
     var text = document.getElementById('sendContent').value;
-    activeServiceWorker.postMessage(text, [activeChannel.port2]);
+    activeServiceWorker.postMessage({
+        type: 'text',
+        content: text
+    }, [activeChannel.port2]);
 }
 
 
