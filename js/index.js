@@ -68,7 +68,7 @@ function postMessage() {
     activeServiceWorker.postMessage({
         type: 'text',
         content: text
-    }, [activeChannel.port2]);
+    }, location.origin, [activeChannel.port2]);
 }
 
 
